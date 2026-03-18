@@ -213,24 +213,6 @@
             font-style: italic;
         }
 
-        /* Tooltip */
-        .tooltip {
-            position: absolute;
-            background: #5a2d6a;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-            z-index: 10;
-        }
-
-        .tooltip.visible {
-            opacity: 1;
-        }
 
         /* Mobile-friendly adjustments */
         @media (max-width: 480px) {
@@ -327,8 +309,7 @@
     <p class="instructions">Tap each section to rate how you're feeling (outer = great, inner = struggling)</p>
 
     <div class="chart-container" id="chartContainer">
-        <svg class="radar" id="radarSvg" viewBox="0 0 600 600"></svg>
-        <div class="tooltip" id="tooltip"></div>
+        <svg class="radar" id="radarSvg" viewBox="-40 -10 680 640"></svg>
     </div>
 
     <div class="legend" id="legend"></div>
@@ -384,7 +365,6 @@
         const selections = new Array(numCategories).fill(0); // 0 = unselected, 1-5 = level
 
         const svg = document.getElementById('radarSvg');
-        const tooltip = document.getElementById('tooltip');
         const container = document.getElementById('chartContainer');
 
         function polarToCartesian(centerX, centerY, radius, angleRad) {
@@ -450,8 +430,6 @@
                         e.preventDefault();
                         handleClick(catIdx, level + 1);
                     }, { passive: false });
-                    path.addEventListener('mouseenter', (e) => showTooltip(e, catIdx, level + 1));
-                    path.addEventListener('mouseleave', hideTooltip);
 
                     svg.appendChild(path);
                 }
@@ -564,22 +542,6 @@
             }
             buildChart();
             updateProgress();
-        }
-
-        function showTooltip(e, catIdx, level) {
-            const catName = categories[catIdx].name.replace('\n', ' ');
-            tooltip.textContent = `${catName}: ${levelLabels[level - 1]} (${level}/5)`;
-            tooltip.classList.add('visible');
-
-            const rect = container.getBoundingClientRect();
-            const x = e.clientX - rect.left + 10;
-            const y = e.clientY - rect.top - 30;
-            tooltip.style.left = x + 'px';
-            tooltip.style.top = y + 'px';
-        }
-
-        function hideTooltip() {
-            tooltip.classList.remove('visible');
         }
 
         function updateProgress() {
