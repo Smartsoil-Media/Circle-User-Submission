@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Radiance South West - Wellbeing Check-In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,8 +14,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #fdf6f0 0%, #f0e6f6 50%, #e6f0f6 100%);
+            font-family: 'Roboto', sans-serif;
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -26,15 +28,13 @@
             margin-bottom: 10px;
         }
 
-        .header h1 {
-            font-size: clamp(1.3rem, 4vw, 1.8rem);
-            color: #5a2d6a;
-            font-weight: 700;
-            letter-spacing: 1px;
+        .logo {
+            width: clamp(180px, 40vw, 260px);
+            height: auto;
         }
 
         .header p {
-            color: #7a5a8a;
+            color: #7C1A5D;
             font-size: clamp(0.8rem, 2.5vw, 0.95rem);
             margin-top: 5px;
         }
@@ -49,7 +49,7 @@
         svg.radar {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 4px 20px rgba(90, 45, 106, 0.1));
+            filter: drop-shadow(0 4px 20px rgba(132, 32, 130, 0.1));
         }
 
         .segment-arc {
@@ -73,7 +73,7 @@
         .category-label {
             font-size: 11px;
             font-weight: 600;
-            fill: #4a2a5a;
+            fill: #842082;
             text-anchor: middle;
             pointer-events: none;
             user-select: none;
@@ -90,15 +90,15 @@
         }
 
         .result-overlay {
-            fill: rgba(90, 45, 106, 0.25);
-            stroke: #5a2d6a;
+            fill: rgba(132, 32, 130, 0.2);
+            stroke: #842082;
             stroke-width: 2.5;
             pointer-events: none;
             transition: d 0.4s ease;
         }
 
         .result-dot {
-            fill: #5a2d6a;
+            fill: #842082;
             stroke: #fff;
             stroke-width: 2;
             pointer-events: none;
@@ -118,7 +118,7 @@
             align-items: center;
             gap: 6px;
             font-size: 0.8rem;
-            color: #5a2d6a;
+            color: #7C1A5D;
         }
 
         .legend-swatch {
@@ -145,14 +145,13 @@
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, #5a2d6a, #8a4d9a);
-            color: white;
-            box-shadow: 0 4px 15px rgba(90, 45, 106, 0.3);
+            background: #842082;
+            color: #ffffff;
+            text-transform: uppercase;
         }
 
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(90, 45, 106, 0.4);
+            transform: scale(1.05);
         }
 
         .btn-submit:disabled {
@@ -163,16 +162,17 @@
 
         .btn-reset {
             background: transparent;
-            color: #8a4d9a;
-            border: 2px solid #8a4d9a;
+            color: #842082;
+            border: 2px solid #842082;
+            text-transform: uppercase;
         }
 
         .btn-reset:hover {
-            background: rgba(138, 77, 154, 0.1);
+            transform: scale(1.05);
         }
 
         .progress-text {
-            color: #7a5a8a;
+            color: #7C1A5D;
             font-size: 0.85rem;
             margin-bottom: 8px;
         }
@@ -189,13 +189,13 @@
         }
 
         .thank-you h2 {
-            color: #5a2d6a;
+            color: #842082;
             font-size: 1.6rem;
             margin-bottom: 10px;
         }
 
         .thank-you p {
-            color: #7a5a8a;
+            color: #7C1A5D;
             font-size: 1rem;
             line-height: 1.6;
         }
@@ -207,7 +207,7 @@
 
         .instructions {
             text-align: center;
-            color: #8a6a9a;
+            color: #7C1A5D;
             font-size: 0.85rem;
             margin-bottom: 5px;
             font-style: italic;
@@ -302,8 +302,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Radiance South West</h1>
-        <p>Wellbeing Check-In</p>
+        <img src="Radiance-Logo.svg" alt="Radiance South West" class="logo">
     </div>
 
     <p class="instructions">Tap each section to rate how you're feeling (outer = great, inner = struggling)</p>
@@ -316,8 +315,8 @@
 
     <div class="controls" id="controls">
         <p class="progress-text" id="progressText">0 of 8 rated</p>
-        <button class="btn btn-submit" id="submitBtn" disabled>Submit Check-In</button>
         <button class="btn btn-reset" id="resetBtn">Start Over</button>
+        <button class="btn btn-submit" id="submitBtn" disabled>Submit Check-In</button>
     </div>
 
     <div class="thank-you" id="thankYou">
@@ -484,7 +483,7 @@
             centerCircle.setAttribute('cy', cy);
             centerCircle.setAttribute('r', minRadius - 2);
             centerCircle.setAttribute('fill', 'rgba(255,255,255,0.85)');
-            centerCircle.setAttribute('stroke', 'rgba(90,45,106,0.2)');
+            centerCircle.setAttribute('stroke', 'rgba(132,32,130,0.2)');
             centerCircle.setAttribute('stroke-width', '1');
             svg.appendChild(centerCircle);
 
@@ -493,7 +492,7 @@
             centerText.setAttribute('x', cx);
             centerText.setAttribute('y', cy + 5);
             centerText.setAttribute('text-anchor', 'middle');
-            centerText.setAttribute('fill', '#5a2d6a');
+            centerText.setAttribute('fill', '#842082');
             centerText.setAttribute('font-size', '13');
             centerText.setAttribute('font-weight', '600');
             centerText.textContent = 'How are you?';
