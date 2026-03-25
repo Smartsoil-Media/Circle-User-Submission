@@ -509,7 +509,7 @@
                 const midAngle = startOffset + catIdx * angleStep + angleStep / 2;
                 const level = selections[catIdx] || 0;
                 const ringWidth = (maxRadius - minRadius) / levels;
-                const r = level === 0 ? minRadius : minRadius + level * ringWidth;
+                const r = level === 0 ? minRadius : minRadius + (level - 0.5) * ringWidth;
                 const pos = polarToCartesian(cx, cy, r, midAngle);
                 points.push(pos);
             }
