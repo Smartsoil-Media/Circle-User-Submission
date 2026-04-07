@@ -213,6 +213,34 @@
             font-style: italic;
         }
 
+        .group-select-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 8px 0 4px;
+            color: #7C1A5D;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .group-select-wrap select {
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #842082;
+            background: #fff;
+            border: 2px solid #842082;
+            border-radius: 20px;
+            padding: 6px 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .group-select-wrap select:focus {
+            box-shadow: 0 0 0 3px rgba(132, 32, 130, 0.15);
+        }
+
 
         /* Mobile-friendly adjustments */
         @media (max-width: 480px) {
@@ -303,6 +331,15 @@
 <body>
     <div class="header">
         <img src="Radiance-Logo.svg" alt="Radiance South West" class="logo">
+    </div>
+
+    <div class="group-select-wrap">
+        <label for="groupSelect">Group:</label>
+        <select id="groupSelect">
+            <option value="Busselton">Busselton</option>
+            <option value="Bunbury">Bunbury</option>
+            <option value="Capel">Capel</option>
+        </select>
     </div>
 
     <p class="instructions">Tap each section to rate how you're feeling (outer = great, inner = struggling)</p>
@@ -558,7 +595,11 @@
             document.getElementById('thankYou').classList.remove('show');
             document.querySelector('.instructions').style.display = '';
             document.querySelector('.legend').style.display = '';
+            document.querySelector('.group-select-wrap').style.display = '';
         }
+
+        // Paste the Google Apps Script Web App URL here after deploying.
+        const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbzWzETtS6odx_GeWg6KbexSZsCKBvwki6Dv7wh2QmH7o9AX0yulsff3Gg7QGyMnfiPeqw/exec';
 
         document.getElementById('submitBtn').addEventListener('click', () => {
             // Collect results
@@ -569,12 +610,32 @@
                     label: levelLabels[selections[i] - 1]
                 };
             });
-            console.log('Wellbeing Check-In Results:', results);
+
+            const payload = {
+                timestamp: new Date().toISOString(),
+                group: document.getElementById('groupSelect').value,
+                results: results
+            };
+
+            console.log('Wellbeing Check-In Results:', payload);
+
+            // Send to Google Sheet via Apps Script.
+            // Using text/plain + no-cors avoids a CORS preflight — Apps Script
+            // still receives the JSON body via e.postData.contents.
+            if (SUBMIT_URL && !SUBMIT_URL.startsWith('PASTE_')) {
+                fetch(SUBMIT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                }).catch(err => console.error('Submit failed:', err));
+            }
 
             // Show thank you
             document.getElementById('controls').style.display = 'none';
             document.querySelector('.instructions').style.display = 'none';
             document.querySelector('.legend').style.display = 'none';
+            document.querySelector('.group-select-wrap').style.display = 'none';
             document.getElementById('thankYou').classList.add('show');
         });
 
