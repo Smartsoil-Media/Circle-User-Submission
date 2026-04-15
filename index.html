@@ -353,7 +353,6 @@
 
     <div class="controls" id="controls">
         <p class="progress-text" id="progressText">0 of 8 rated</p>
-        <button class="btn btn-reset" id="resetBtn">Start Over</button>
         <button class="btn btn-submit" id="submitBtn" disabled>Submit Check-In</button>
     </div>
 
@@ -640,7 +639,6 @@
             document.getElementById('thankYou').classList.add('show');
         });
 
-        document.getElementById('resetBtn').addEventListener('click', reset);
         document.getElementById('newBtn').addEventListener('click', reset);
 
         // Build legend
